@@ -1,5 +1,5 @@
 create database ProyekBasdat
-
+go
 use ProyekBasdat
 
 CREATE TABLE Sepeda (

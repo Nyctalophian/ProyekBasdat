@@ -5,9 +5,12 @@
 package com.mycompany.proyekakhirbasdat;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -62,6 +65,12 @@ public class TabelSepeda extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Nama Sepeda");
+
+        tfNama.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfNamaActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Harga Beli");
@@ -253,6 +262,24 @@ public class TabelSepeda extends javax.swing.JFrame {
 //        } catch (Exception e) {
 //            JOptionPane.showMessageDialog(rootPane, "Gagal mengambil data");
 //        }
+
+                  tableModel.setRowCount(0);
+
+
+          if (!(tfNIM.getText().isBlank()&&tfNama.getText().isBlank()&&tfJenisKelamin.getText().isBlank())){
+          
+                try {
+                                Connection conn = ConnectionDB.getConnection();
+
+                    showSomeData( statementQueryCondition(conn, tfNIM.getText(), tfNama.getText(), tfJenisKelamin.getText()) );
+                } catch (SQLException ex) {
+                    Logger.getLogger(TabelSepeda.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                  Logger.getLogger(TabelSepeda.class.getName()).log(Level.SEVERE, null, ex);
+              }
+          }
+         
+
     }//GEN-LAST:event_btnRetrieveActionPerformed
 
     private void btnDeleteCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_btnDeleteCaretPositionChanged
@@ -302,12 +329,29 @@ public class TabelSepeda extends javax.swing.JFrame {
 //        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    private void tfNamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNamaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfNamaActionPerformed
+
     // RETRIEVE ALL
     public ResultSet statementQueryAll(Connection conn) throws SQLException {
         Statement st = conn.createStatement();
         ResultSet rs = st.executeQuery(
             "SELECT * FROM Sepeda"
         );
+        
+        return rs;
+    }
+    
+    public ResultSet statementQueryCondition(Connection conn,String id,String nama, String harga) throws SQLException {
+       
+        
+        String sql = "select * from sepeda where Sepeda_ID like ? and Nama_Sepeda like ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, "%"+id+"%");
+        ps.setString(2, "%"+nama+"%");
+
+        ResultSet rs = ps.executeQuery();
         
         return rs;
     }
@@ -328,7 +372,23 @@ public class TabelSepeda extends javax.swing.JFrame {
                 tableModel.addRow(new Object[]{id, nama, harga_beli});
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, "Gagal menampilkan data");
+            JOptionPane.showMessageDialog(rootPane, "Gagal menampilkan data : "+ e.getMessage());
+        }
+    }
+    
+    
+    public void showSomeData(ResultSet hasil) {
+        try {
+           
+            while (hasil.next()) {
+                String id = hasil.getString("Sepeda_ID");
+                String nama = hasil.getString("Nama_Sepeda");
+                String harga_beli = hasil.getString("Harga_Beli");
+                
+                tableModel.addRow(new Object[]{id, nama, harga_beli});
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal menampilkan data : "+ e.getMessage());
         }
     }
     

@@ -19,6 +19,7 @@ import java.sql.SQLException;
 public class ConnectionDB {
     // Sultan
     static String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=ProyekBasdat;encrypt=true;trustServerCertificate=true;";
+    static String urlrafa = "jdbc:sqlserver://localhost:1433;databaseName=ProyekBasdat;integratedSecurity=true;encrypt=false;";
     static String userName = "sa";
     static String password = "123";
 
@@ -27,13 +28,14 @@ public class ConnectionDB {
         {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection conn = DriverManager.getConnection(url, userName, passwd);
+
             return conn;
         }
         
         public static Connection getConnection() throws SQLException, ClassNotFoundException 
         {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Connection conn = DriverManager.getConnection(url, userName, password);
+            Connection conn = DriverManager.getConnection(urlrafa);
             return conn;
         }
 
