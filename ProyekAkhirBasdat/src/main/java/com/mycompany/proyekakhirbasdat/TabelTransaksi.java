@@ -4,6 +4,12 @@
  */
 package com.mycompany.proyekakhirbasdat;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -17,6 +23,7 @@ public class TabelTransaksi extends javax.swing.JFrame {
      */
     public TabelTransaksi() {
         initComponents();
+        showAllData();
     }
 
     /**
@@ -37,22 +44,20 @@ public class TabelTransaksi extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        tfIDTrans = new javax.swing.JTextField();
+        tfIDTransaksi = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        tfTanggalTrans = new javax.swing.JTextField();
+        tfTanggalTransaksi = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        tfIDSpd = new javax.swing.JTextField();
+        tfIDSepeda = new javax.swing.JTextField();
         btnShowAll = new javax.swing.JButton();
         btnCreate = new javax.swing.JButton();
         btnRetrieve = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelMahasiswa = new javax.swing.JTable();
+        tabelTransaksi = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         tfHargaJual = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        tfUntung = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -135,15 +140,32 @@ public class TabelTransaksi extends javax.swing.JFrame {
             }
         });
 
-        tabelMahasiswa.setModel(tableModel);
-        tabelMahasiswa.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tabelMahasiswa);
+        tabelTransaksi.setModel(tableModel);
+        tabelTransaksi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = tabelTransaksi.getSelectedRow();
+
+                if (row != -1) {
+                    String idTransaksi = tabelTransaksi.getValueAt(row, 0).toString(); // Kolom ke-0
+                    String tglTransaksi = tabelTransaksi.getValueAt(row, 1).toString(); // Kolom ke-1
+                    String idSepeda = tabelTransaksi.getValueAt(row, 2).toString(); // Kolom ke-1
+                    String hargaJual = tabelTransaksi.getValueAt(row, 3).toString(); // Kolom ke-1
+                    //            String untung = tabelTransaksi.getValueAt(row, 4).toString(); // Kolom ke-1
+
+                    tfIDTransaksi.setEnabled(false);
+                    tfIDTransaksi.setText(idTransaksi);
+                    tfTanggalTransaksi.setText(tglTransaksi);
+                    tfIDSepeda.setText(idSepeda);
+                    tfHargaJual.setText(hargaJual);
+                    //            tfUntung.setText(untung);
+                }
+            }
+        });
+        tabelTransaksi.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tabelTransaksi);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Harga Jual");
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("Untung");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -162,15 +184,13 @@ public class TabelTransaksi extends javax.swing.JFrame {
                         .addComponent(btnRetrieve, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
-                    .addComponent(tfIDTrans)
-                    .addComponent(tfTanggalTrans)
+                    .addComponent(tfIDTransaksi)
+                    .addComponent(tfTanggalTransaksi)
                     .addComponent(jLabel4)
                     .addComponent(btnShowAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1)
-                    .addComponent(tfIDSpd, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tfHargaJual)
-                    .addComponent(jLabel5)
-                    .addComponent(tfUntung))
+                    .addComponent(tfIDSepeda, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(tfHargaJual))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
                 .addContainerGap())
@@ -186,24 +206,20 @@ public class TabelTransaksi extends javax.swing.JFrame {
                         .addGap(17, 17, 17)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfIDTrans, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfIDTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfTanggalTrans, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfTanggalTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfIDSpd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfIDSepeda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tfHargaJual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfUntung, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(72, 72, 72)
                         .addComponent(btnShowAll)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -225,7 +241,7 @@ public class TabelTransaksi extends javax.swing.JFrame {
 
     private void btnShowAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowAllActionPerformed
         tableModel.setRowCount(0);
-//        showAllData();
+        showAllData();
     }//GEN-LAST:event_btnShowAllActionPerformed
 
     private void btnCreateCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_btnCreateCaretPositionChanged
@@ -233,22 +249,24 @@ public class TabelTransaksi extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCreateCaretPositionChanged
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
-        //        tableModel.setRowCount(0);
-        //        String nim = tfNIM.getText();
-        //        String nama = tfNama.getText();
-        //        String jenisKelamin = tfJenisKelamin.getText();
-        //
-        //        try {
-            //            Connection connection = ConnectionDB.getConnection();
-            //            statementInsert(connection, nim, nama, jenisKelamin);
-            //        } catch (Exception e) {
-            //            JOptionPane.showMessageDialog(rootPane, "Gagal menambahkan data BTN");
-            //        }
-        //
-        //        tfNIM.setText("");
-        //        tfNama.setText("");
-        //        tfJenisKelamin.setText("");
-        //        showAllData();
+                tableModel.setRowCount(0);
+                String nim = tfIDTransaksi.getText();
+                String tgl = tfTanggalTransaksi.getText();
+                String idSepeda = tfIDSepeda.getText();
+                String hargaJual = tfHargaJual.getText();
+        
+                try {
+                        Connection connection = ConnectionDB.getConnection();
+                        statementInsert(connection, nim, tgl, idSepeda, hargaJual);
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(rootPane, "Gagal menambahkan data");
+                    }
+        
+                tfIDTransaksi.setText("");
+                tfTanggalTransaksi.setText("");
+                tfIDSepeda.setText("");
+                tfHargaJual.setText("");
+                showAllData();
     }//GEN-LAST:event_btnCreateActionPerformed
 
     private void btnRetrieveCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_btnRetrieveCaretPositionChanged
@@ -319,6 +337,85 @@ public class TabelTransaksi extends javax.swing.JFrame {
             //        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    // CREATE
+    public void statementInsert(Connection conn, String idTransaksi, String tgl, String idSepeda, String hargaJual) throws SQLException {
+        // ambil harga beli
+        ResultSet ambilHarga = ambilHargaSepeda(conn, idSepeda);
+        String hargaBeli = "";
+        while (ambilHarga.next()){
+            hargaBeli = ambilHarga.getString("Harga_Beli");
+        }
+        
+        // cari untung
+        int untung = Integer.parseInt(hargaJual) - Integer.parseInt(hargaBeli);
+        
+        String format = ("insert into Transaksi(Trans_ID,Tgl,Sepeda_ID,Jual,Untung) values ('" + idTransaksi + "','" + tgl + "','" + idSepeda +"','" + hargaJual + "','" + untung + "')");
+        Statement st = conn.createStatement();
+        st.executeUpdate(format);
+    }
+    
+    // RETRIEVE ALL
+    public ResultSet statementQueryAll(Connection conn) throws SQLException {
+        Statement st = conn.createStatement();
+        ResultSet rs = st.executeQuery(
+            "SELECT * FROM Transaksi"
+        );
+        
+        return rs;
+    }
+    
+    // RETRIEVE HARGA
+    public ResultSet ambilHargaSepeda(Connection conn, String idSepeda) throws SQLException {
+        String sql = "select Harga_Beli from Sepeda where Sepeda_ID = '?'";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, idSepeda);
+        
+        ResultSet rs = ps.executeQuery();
+        return rs;
+    }
+    
+    // RETRIEVE TRANSAKSI
+    public ResultSet statementQueryCondition(Connection conn,String T_id,String Tgl, String S_id, int jual, int untung) throws SQLException {
+        String sql = "select * from Transaksi where Trans_ID like ? or Tgl like ? or Sepeda_ID like ? or Jual like ? or Untung like ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, "%"+T_id+"%");
+        ps.setString(2, "%"+Tgl+"%");
+        ps.setString(3, "%"+S_id+"%");
+        ps.setString(4, "%"+jual+"%");
+        ps.setString(5, "%"+untung+"%");
+
+        ResultSet rs = ps.executeQuery();
+        
+        return rs;
+    }
+    
+    // SHOW ALL DATA
+    public void showAllData() {
+        try {
+            Connection conn = ConnectionDB.getConnection();
+
+            tfIDTransaksi.setEnabled(true);
+            
+            tfIDTransaksi.setText("");
+            tfTanggalTransaksi.setText("");
+            tfIDSepeda.setText("");
+            tfHargaJual.setText("");
+            
+            ResultSet hasil = statementQueryAll(conn);
+            while (hasil.next()) {
+                String id = hasil.getString("Trans_ID");
+                String tgl = hasil.getString("Tgl");
+                String sepeda_id = hasil.getString("Sepeda_ID");
+                String jual = hasil.getString("Jual");
+                String untung = hasil.getString("Untung");
+                
+                tableModel.addRow(new Object[]{id, tgl, sepeda_id, jual, untung});
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal menampilkan data : "+ e.getMessage());
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -364,13 +461,11 @@ public class TabelTransaksi extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabelMahasiswa;
+    private javax.swing.JTable tabelTransaksi;
     private javax.swing.JTextField tfHargaJual;
-    private javax.swing.JTextField tfIDSpd;
-    private javax.swing.JTextField tfIDTrans;
-    private javax.swing.JTextField tfTanggalTrans;
-    private javax.swing.JTextField tfUntung;
+    private javax.swing.JTextField tfIDSepeda;
+    private javax.swing.JTextField tfIDTransaksi;
+    private javax.swing.JTextField tfTanggalTransaksi;
     // End of variables declaration//GEN-END:variables
 }

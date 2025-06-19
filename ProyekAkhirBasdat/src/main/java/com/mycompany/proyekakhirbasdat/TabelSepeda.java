@@ -25,6 +25,7 @@ public class TabelSepeda extends javax.swing.JFrame {
      */
     public TabelSepeda() {
         initComponents();
+        showAllData();
     }
 
     /**
@@ -45,18 +46,18 @@ public class TabelSepeda extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        tfNIM = new javax.swing.JTextField();
+        tfIDSepeda = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        tfNama = new javax.swing.JTextField();
+        tfNamaSepeda = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        tfJenisKelamin = new javax.swing.JTextField();
+        tfHargaBeli = new javax.swing.JTextField();
         btnShowAll = new javax.swing.JButton();
         btnCreate = new javax.swing.JButton();
         btnRetrieve = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelMahasiswa = new javax.swing.JTable();
+        tabelSepeda = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,9 +67,9 @@ public class TabelSepeda extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Nama Sepeda");
 
-        tfNama.addActionListener(new java.awt.event.ActionListener() {
+        tfNamaSepeda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfNamaActionPerformed(evt);
+                tfNamaSepedaActionPerformed(evt);
             }
         });
 
@@ -145,9 +146,25 @@ public class TabelSepeda extends javax.swing.JFrame {
             }
         });
 
-        tabelMahasiswa.setModel(tableModel);
-        tabelMahasiswa.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tabelMahasiswa);
+        tabelSepeda.setModel(tableModel);
+        tabelSepeda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = tabelSepeda.getSelectedRow();
+
+                if (row != -1) {
+                    String idSepeda = tabelSepeda.getValueAt(row, 0).toString(); // Kolom ke-0
+                    String namaSepeda = tabelSepeda.getValueAt(row, 1).toString(); // Kolom ke-1
+                    String hargaBeli = tabelSepeda.getValueAt(row, 2).toString(); // Kolom ke-1
+
+                    tfIDSepeda.setEnabled(false);
+                    tfIDSepeda.setText(idSepeda);
+                    tfNamaSepeda.setText(namaSepeda);
+                    tfHargaBeli.setText(hargaBeli);
+                }
+            }
+        });
+        tabelSepeda.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tabelSepeda);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -167,9 +184,9 @@ public class TabelSepeda extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
-                    .addComponent(tfNIM)
-                    .addComponent(tfNama)
-                    .addComponent(tfJenisKelamin)
+                    .addComponent(tfIDSepeda)
+                    .addComponent(tfNamaSepeda)
+                    .addComponent(tfHargaBeli)
                     .addComponent(btnShowAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
@@ -186,15 +203,15 @@ public class TabelSepeda extends javax.swing.JFrame {
                         .addGap(17, 17, 17)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfNIM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfIDSepeda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfNama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfNamaSepeda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfJenisKelamin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfHargaBeli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnShowAll)
                         .addGap(18, 18, 18)
@@ -225,22 +242,22 @@ public class TabelSepeda extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCreateCaretPositionChanged
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
-//        tableModel.setRowCount(0);
-//        String nim = tfNIM.getText();
-//        String nama = tfNama.getText();
-//        String jenisKelamin = tfJenisKelamin.getText();
-//
-//        try {
-//            Connection connection = ConnectionDB.getConnection();
-//            statementInsert(connection, nim, nama, jenisKelamin);
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(rootPane, "Gagal menambahkan data BTN");
-//        }
-//
-//        tfNIM.setText("");
-//        tfNama.setText("");
-//        tfJenisKelamin.setText("");
-//        showAllData();
+        tableModel.setRowCount(0);
+        String idSepeda = tfIDSepeda.getText();
+        String namaSepeda = tfNamaSepeda.getText();
+        int hargaBeli = Integer.parseInt(tfHargaBeli.getText());
+
+        try {
+            Connection connection = ConnectionDB.getConnection();
+            statementInsert(connection, idSepeda, namaSepeda, hargaBeli);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal menambahkan data");
+        }
+
+        tfIDSepeda.setText("");
+        tfNamaSepeda.setText("");
+        tfHargaBeli.setText("");
+        showAllData();
     }//GEN-LAST:event_btnCreateActionPerformed
 
     private void btnRetrieveCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_btnRetrieveCaretPositionChanged
@@ -266,12 +283,11 @@ public class TabelSepeda extends javax.swing.JFrame {
                   tableModel.setRowCount(0);
 
 
-          if (!(tfNIM.getText().isBlank()&&tfNama.getText().isBlank()&&tfJenisKelamin.getText().isBlank())){
+          if (!(tfIDSepeda.getText().isBlank()&&tfNamaSepeda.getText().isBlank()&&tfHargaBeli.getText().isBlank())){
           
                 try {
-                                Connection conn = ConnectionDB.getConnection();
-
-                    showSomeData( statementQueryCondition(conn, tfNIM.getText(), tfNama.getText(), tfJenisKelamin.getText()) );
+                    Connection conn = ConnectionDB.getConnection();
+                    showSomeData( statementQueryCondition(conn, tfIDSepeda.getText(), tfNamaSepeda.getText(), tfHargaBeli.getText()) );
                 } catch (SQLException ex) {
                     Logger.getLogger(TabelSepeda.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
@@ -287,26 +303,26 @@ public class TabelSepeda extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteCaretPositionChanged
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-//        int selected = tabelMahasiswa.getSelectedRow();
-//        Connection conn = null;
-//
-//        String nim = tabelMahasiswa.getValueAt(selected, 0).toString();
-//
-//        try {
-//            conn = ConnectionDB.getConnection();
-//            statementDelete(conn, nim);
-//
-//            tableModel.setRowCount(0);
-//            showAllData();
-//
-//            tfNIM.setText("");
-//            tfNama.setText("");
-//            tfJenisKelamin.setText("");
-//        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(rootPane, "SQL");
-//        } catch (ClassNotFoundException e) {
-//            JOptionPane.showMessageDialog(rootPane, "CLASS NOT FOUND");
-//        }
+        int selected = tabelSepeda.getSelectedRow();
+        Connection conn = null;
+
+        String idSepeda = tabelSepeda.getValueAt(selected, 0).toString();
+
+        try {
+            conn = ConnectionDB.getConnection();
+            statementDelete(conn, idSepeda);
+
+            tableModel.setRowCount(0);
+            showAllData();
+
+            tfIDSepeda.setText("");
+            tfNamaSepeda.setText("");
+            tfHargaBeli.setText("");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, "SQL");
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(rootPane, "CLASS NOT FOUND");
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnUpdateCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_btnUpdateCaretPositionChanged
@@ -314,25 +330,32 @@ public class TabelSepeda extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateCaretPositionChanged
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-//        try {
-//            Connection conn = ConnectionDB.getConnection();
-//            statementUpdate(conn);
-//
-//            tableModel.setRowCount(0);
-//            showAllData();
-//
-//            tfNIM.setText("");
-//            tfNama.setText("");
-//            tfJenisKelamin.setText("");
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(rootPane, "Gagal melakukan UPDATE terhadap database");
-//        }
+        try {
+            Connection conn = ConnectionDB.getConnection();
+            statementUpdate(conn);
+
+            tableModel.setRowCount(0);
+            showAllData();
+
+            tfIDSepeda.setText("");
+            tfNamaSepeda.setText("");
+            tfHargaBeli.setText("");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal melakukan UPDATE terhadap database");
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void tfNamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNamaActionPerformed
+    private void tfNamaSepedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNamaSepedaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_tfNamaActionPerformed
+    }//GEN-LAST:event_tfNamaSepedaActionPerformed
 
+        // CREATE
+    public void statementInsert(Connection conn, String idSepeda, String namaSepeda, double hargaSepeda) throws SQLException {
+        String format = ("insert into Sepeda(Sepeda_ID,Nama_Sepeda,Harga_Beli) values ('" + idSepeda + "','" + namaSepeda + "'," + hargaSepeda +")");
+        Statement st = conn.createStatement();
+        st.executeUpdate(format);
+    }
+    
     // RETRIEVE ALL
     public ResultSet statementQueryAll(Connection conn) throws SQLException {
         Statement st = conn.createStatement();
@@ -344,8 +367,6 @@ public class TabelSepeda extends javax.swing.JFrame {
     }
     
     public ResultSet statementQueryCondition(Connection conn,String id,String nama, String harga) throws SQLException {
-       
-        
         String sql = "select * from sepeda where Sepeda_ID like ? and Nama_Sepeda like ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, "%"+id+"%");
@@ -360,9 +381,12 @@ public class TabelSepeda extends javax.swing.JFrame {
     public void showAllData() {
         try {
             Connection conn = ConnectionDB.getConnection();
-                        JOptionPane.showMessageDialog(rootPane, "CON");
 
-            JOptionPane.showMessageDialog(rootPane, "MIAW");
+            tfIDSepeda.setEnabled(true);
+            tfIDSepeda.setText("");
+            tfNamaSepeda.setText("");
+            tfHargaBeli.setText("");
+            
             ResultSet hasil = statementQueryAll(conn);
             while (hasil.next()) {
                 String id = hasil.getString("Sepeda_ID");
@@ -373,6 +397,34 @@ public class TabelSepeda extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, "Gagal menampilkan data : "+ e.getMessage());
+        }
+    }
+    
+    // UPDATE
+    public void statementUpdate(Connection conn) throws SQLException {
+        int selected = tabelSepeda.getSelectedRow();
+        
+        String idSepedaTerpilih = tabelSepeda.getValueAt(selected, 0).toString(); // kolom idSEPEDA
+        
+        String idSepedaBaru = tfIDSepeda.getText();
+        String namaSepedaBaru = tfNamaSepeda.getText();
+        int hargaSepedaBaru = Integer.parseInt(tfHargaBeli.getText());
+
+        String format = "UPDATE Sepeda SET Sepeda_ID = '" + idSepedaBaru + "', Nama_Sepeda = '" + namaSepedaBaru + "', Harga_Beli = " + hargaSepedaBaru + " WHERE Sepeda_ID = '" + idSepedaTerpilih + "'";
+        Statement st = conn.createStatement();
+        st.executeUpdate(format);
+    }
+    
+    // DELETE
+    public void statementDelete(Connection conn, String idSepeda)throws SQLException{
+        try {
+            Statement st = conn.createStatement();
+            if (idSepeda == null) {
+                idSepeda = "";
+            }
+            st.executeUpdate("delete from Sepeda where Sepeda_ID = " + idSepeda);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal untuk menghapus data");
         }
     }
     
@@ -438,9 +490,9 @@ public class TabelSepeda extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabelMahasiswa;
-    private javax.swing.JTextField tfJenisKelamin;
-    private javax.swing.JTextField tfNIM;
-    private javax.swing.JTextField tfNama;
+    private javax.swing.JTable tabelSepeda;
+    private javax.swing.JTextField tfHargaBeli;
+    private javax.swing.JTextField tfIDSepeda;
+    private javax.swing.JTextField tfNamaSepeda;
     // End of variables declaration//GEN-END:variables
 }

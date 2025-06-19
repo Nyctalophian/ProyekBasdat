@@ -39,9 +39,9 @@
                   <Component id="jLabel1" alignment="0" min="-2" pref="70" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="tfNIM" alignment="0" max="32767" attributes="0"/>
-                  <Component id="tfNama" alignment="0" max="32767" attributes="0"/>
-                  <Component id="tfJenisKelamin" alignment="0" max="32767" attributes="0"/>
+                  <Component id="tfIDSepeda" alignment="0" max="32767" attributes="0"/>
+                  <Component id="tfNamaSepeda" alignment="0" max="32767" attributes="0"/>
+                  <Component id="tfHargaBeli" alignment="0" max="32767" attributes="0"/>
                   <Component id="btnShowAll" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -62,15 +62,15 @@
                       <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tfNIM" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfIDSepeda" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tfNama" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfNamaSepeda" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tfJenisKelamin" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfHargaBeli" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btnShowAll" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -99,7 +99,7 @@
         <Property name="text" type="java.lang.String" value="ID Sepeda"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="tfNIM">
+    <Component class="javax.swing.JTextField" name="tfIDSepeda">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -109,9 +109,9 @@
         <Property name="text" type="java.lang.String" value="Nama Sepeda"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="tfNama">
+    <Component class="javax.swing.JTextField" name="tfNamaSepeda">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfNamaActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfNamaSepedaActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
@@ -122,7 +122,7 @@
         <Property name="text" type="java.lang.String" value="Harga Beli"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="tfJenisKelamin">
+    <Component class="javax.swing.JTextField" name="tfHargaBeli">
     </Component>
     <Component class="javax.swing.JButton" name="btnShowAll">
       <Properties>
@@ -176,9 +176,9 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="tabelMahasiswa">
+        <Component class="javax.swing.JTable" name="tabelSepeda">
           <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" postCode="tabelSepeda.addMouseListener(new java.awt.event.MouseAdapter() {&#xa;    public void mouseClicked(java.awt.event.MouseEvent evt) {&#xa;        int row = tabelSepeda.getSelectedRow(); &#xa;&#xa;        if (row != -1) { &#xa;            String idSepeda = tabelSepeda.getValueAt(row, 0).toString(); // Kolom ke-0&#xa;            String namaSepeda = tabelSepeda.getValueAt(row, 1).toString(); // Kolom ke-1&#xa;            String hargaBeli = tabelSepeda.getValueAt(row, 2).toString(); // Kolom ke-1&#xa;&#xa;            tfIDSepeda.setEnabled(false);&#xa;            tfIDSepeda.setText(idSepeda);&#xa;            tfNamaSepeda.setText(namaSepeda);&#xa;            tfHargaBeli.setText(hargaBeli);&#xa;        }&#xa;    }&#xa;});">
               <Connection code="tableModel" type="code"/>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
