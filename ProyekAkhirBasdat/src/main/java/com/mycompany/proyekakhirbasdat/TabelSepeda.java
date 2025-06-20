@@ -303,6 +303,8 @@ public class TabelSepeda extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteCaretPositionChanged
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        
+        
         int selected = tabelSepeda.getSelectedRow();
         Connection conn = null;
 
@@ -323,6 +325,8 @@ public class TabelSepeda extends javax.swing.JFrame {
         } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(rootPane, "CLASS NOT FOUND");
         }
+        
+        
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnUpdateCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_btnUpdateCaretPositionChanged

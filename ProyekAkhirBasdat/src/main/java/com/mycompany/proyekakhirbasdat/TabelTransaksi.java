@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -63,6 +65,12 @@ public class TabelTransaksi extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("ID Transaksi");
+
+        tfIDTransaksi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfIDTransaksiActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Tanggal Transaksi");
@@ -250,16 +258,18 @@ public class TabelTransaksi extends javax.swing.JFrame {
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
                 tableModel.setRowCount(0);
-                String nim = tfIDTransaksi.getText();
+                String idtrans = tfIDTransaksi.getText();
                 String tgl = tfTanggalTransaksi.getText();
                 String idSepeda = tfIDSepeda.getText();
                 String hargaJual = tfHargaJual.getText();
         
                 try {
                         Connection connection = ConnectionDB.getConnection();
-                        statementInsert(connection, nim, tgl, idSepeda, hargaJual);
+                        statementInsert(connection, idtrans, tgl, idSepeda, hargaJual);
                     } catch (Exception e) {
-                        JOptionPane.showMessageDialog(rootPane, "Gagal menambahkan data");
+                        JOptionPane.showMessageDialog(rootPane, "Gagal menambahkan data : "+ e.getMessage());
+                   
+                       e.printStackTrace();
                     }
         
                 tfIDTransaksi.setText("");
@@ -274,20 +284,26 @@ public class TabelTransaksi extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRetrieveCaretPositionChanged
 
     private void btnRetrieveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrieveActionPerformed
-        //        tableModel.setRowCount(0);
-        //        try {
-            //            Connection conn = ConnectionDB.getConnection();
-            //            ResultSet hasil = statementQuery(conn);
-            //            while (hasil.next()) {
-                //                String NIM = hasil.getString("NIM");
-                //                String nama = hasil.getString("Nama");
-                //                String jenisKelamin = hasil.getString("JenisKelamin");
-                //
-                //                tableModel.addRow(new Object[]{NIM, nama, jenisKelamin});
-                //            }
-            //        } catch (Exception e) {
-            //            JOptionPane.showMessageDialog(rootPane, "Gagal mengambil data");
-            //        }
+        tableModel.setRowCount(0);
+
+        if (!(tfIDTransaksi.getText().isBlank() && tfTanggalTransaksi.getText().isBlank() && tfIDSepeda.getText().isBlank() && tfHargaJual.getText().isBlank())) {
+            try {
+                Connection conn = ConnectionDB.getConnection();
+                showSomeData(
+                    statementQueryCondition(
+                        conn,
+                        tfIDTransaksi.getText(),
+                        tfTanggalTransaksi.getText(),
+                        tfIDSepeda.getText(),
+                        Integer.parseInt(tfHargaJual.getText())
+                    )
+                );
+            } catch (SQLException ex) {
+                Logger.getLogger(TabelTransaksi.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(TabelTransaksi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnRetrieveActionPerformed
 
     private void btnDeleteCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_btnDeleteCaretPositionChanged
@@ -295,26 +311,29 @@ public class TabelTransaksi extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteCaretPositionChanged
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        //        int selected = tabelMahasiswa.getSelectedRow();
-        //        Connection conn = null;
-        //
-        //        String nim = tabelMahasiswa.getValueAt(selected, 0).toString();
-        //
-        //        try {
-            //            conn = ConnectionDB.getConnection();
-            //            statementDelete(conn, nim);
-            //
-            //            tableModel.setRowCount(0);
-            //            showAllData();
-            //
-            //            tfNIM.setText("");
-            //            tfNama.setText("");
-            //            tfJenisKelamin.setText("");
-            //        } catch (SQLException ex) {
-            //            JOptionPane.showMessageDialog(rootPane, "SQL");
-            //        } catch (ClassNotFoundException e) {
-            //            JOptionPane.showMessageDialog(rootPane, "CLASS NOT FOUND");
-            //        }
+        int selected = tabelTransaksi.getSelectedRow();
+        Connection conn = null;
+        String idtran;
+        if (selected !=-1)
+        idtran = tabelTransaksi.getValueAt(selected, 0).toString();
+        else
+        idtran= tfIDTransaksi.getText();
+        try {
+            conn = ConnectionDB.getConnection();
+            statementDelete(conn, idtran);
+
+            tableModel.setRowCount(0);
+            showAllData();
+
+            tfIDSepeda.setText("");
+            tfIDTransaksi.setText("");
+            tfHargaJual.setText("");
+            tfTanggalTransaksi.setText("");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, "SQL");
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(rootPane, "CLASS NOT FOUND");
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnUpdateCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_btnUpdateCaretPositionChanged
@@ -322,20 +341,38 @@ public class TabelTransaksi extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateCaretPositionChanged
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        //        try {
-            //            Connection conn = ConnectionDB.getConnection();
-            //            statementUpdate(conn);
-            //
-            //            tableModel.setRowCount(0);
-            //            showAllData();
-            //
-            //            tfNIM.setText("");
-            //            tfNama.setText("");
-            //            tfJenisKelamin.setText("");
-            //        } catch (Exception e) {
-            //            JOptionPane.showMessageDialog(rootPane, "Gagal melakukan UPDATE terhadap database");
-            //        }
+            try {
+            Connection conn = ConnectionDB.getConnection();
+            statementUpdate(conn);
+
+            tableModel.setRowCount(0);
+            showAllData();
+
+            tfIDSepeda.setText("");
+            tfHargaJual.setText("");
+            tfIDTransaksi.setText("");
+            tfTanggalTransaksi.setText("");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal melakukan UPDATE terhadap database");
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    public void statementUpdate(Connection conn) throws SQLException {
+        int selected = tabelTransaksi.getSelectedRow();
+
+        String idSepedaTerpilih = tabelTransaksi.getValueAt(selected, 0).toString(); // kolom idSEPEDA
+        String idSepedaBaru = tfIDSepeda.getText();
+        int hargajualbaru = Integer.parseInt(tfHargaJual.getText());
+
+        String format = "UPDATE Transaksi SET Sepeda_ID = '" + idSepedaBaru +  "', Jual = " + hargajualbaru + " WHERE Trans_id = '" + idSepedaTerpilih + "'";
+        Statement st = conn.createStatement();
+        st.executeUpdate(format);
+    }
+
+
+    private void tfIDTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfIDTransaksiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfIDTransaksiActionPerformed
 
     // CREATE
     public void statementInsert(Connection conn, String idTransaksi, String tgl, String idSepeda, String hargaJual) throws SQLException {
@@ -349,9 +386,15 @@ public class TabelTransaksi extends javax.swing.JFrame {
         // cari untung
         int untung = Integer.parseInt(hargaJual) - Integer.parseInt(hargaBeli);
         
-        String format = ("insert into Transaksi(Trans_ID,Tgl,Sepeda_ID,Jual,Untung) values ('" + idTransaksi + "','" + tgl + "','" + idSepeda +"','" + hargaJual + "','" + untung + "')");
-        Statement st = conn.createStatement();
-        st.executeUpdate(format);
+//        String format = ("insert into Transaksi(Trans_ID,Tgl,Sepeda_ID,Jual,Untung) values ('" + idTransaksi + "','" + tgl + "','" + idSepeda +"','" + hargaJual + "','" + untung + "')");
+//        Statement st = conn.createStatement();
+//        st.executeUpdate(format);
+    String sql= "insert into Transaksi values ((select max(Trans_ID)+1 from Transaksi ) ,getdate(),?,?,?)";
+    PreparedStatement ps = conn.prepareStatement(sql);
+    ps.setString(1, idSepeda);
+    ps.setInt(2,Integer.parseInt(hargaJual));
+    ps.setInt(3,untung);
+    ps.executeUpdate();
     }
     
     // RETRIEVE ALL
@@ -366,7 +409,7 @@ public class TabelTransaksi extends javax.swing.JFrame {
     
     // RETRIEVE HARGA
     public ResultSet ambilHargaSepeda(Connection conn, String idSepeda) throws SQLException {
-        String sql = "select Harga_Beli from Sepeda where Sepeda_ID = '?'";
+        String sql = "select Harga_Beli from Sepeda where Sepeda_ID = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, idSepeda);
         
@@ -375,14 +418,13 @@ public class TabelTransaksi extends javax.swing.JFrame {
     }
     
     // RETRIEVE TRANSAKSI
-    public ResultSet statementQueryCondition(Connection conn,String T_id,String Tgl, String S_id, int jual, int untung) throws SQLException {
-        String sql = "select * from Transaksi where Trans_ID like ? or Tgl like ? or Sepeda_ID like ? or Jual like ? or Untung like ?";
+    public ResultSet statementQueryCondition(Connection conn,String T_id,String Tgl, String S_id, int jual) throws SQLException {
+        String sql = "select * from Transaksi where Trans_ID like ? or Tgl like ? or Sepeda_ID like ? or Jual like ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, "%"+T_id+"%");
         ps.setString(2, "%"+Tgl+"%");
         ps.setString(3, "%"+S_id+"%");
         ps.setString(4, "%"+jual+"%");
-        ps.setString(5, "%"+untung+"%");
 
         ResultSet rs = ps.executeQuery();
         
@@ -415,7 +457,34 @@ public class TabelTransaksi extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Gagal menampilkan data : "+ e.getMessage());
         }
     }
-    
+
+    public void statementDelete(Connection conn, String idSepeda)throws SQLException{
+        try {
+            Statement st = conn.createStatement();
+            if (idSepeda == null) {
+                idSepeda = "";
+            }
+            st.executeUpdate("delete from Transaksi where Trans_ID = " + idSepeda);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal untuk menghapus data: "+ e.getMessage());
+        }
+    }
+
+    public void showSomeData(ResultSet hasil) {
+        try {
+            while (hasil.next()) {
+                String id = hasil.getString("Trans_ID");
+                String tgl = hasil.getString("Tgl");
+                String sepeda_id = hasil.getString("Sepeda_ID");
+                String jual = hasil.getString("Jual");
+                String untung = hasil.getString("Untung");
+                tableModel.addRow(new Object[]{id, tgl, sepeda_id, jual, untung});
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal menampilkan data : " + e.getMessage());
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
