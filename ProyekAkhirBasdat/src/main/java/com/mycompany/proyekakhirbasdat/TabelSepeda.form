@@ -136,7 +136,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnShowAll">
       <Properties>
-        <Property name="text" type="java.lang.String" value="SHOW ALL"/>
+        <Property name="text" type="java.lang.String" value="CLEAR"/>
       </Properties>
       <Events>
         <EventHandler event="caretPositionChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="btnShowAllCaretPositionChanged"/>

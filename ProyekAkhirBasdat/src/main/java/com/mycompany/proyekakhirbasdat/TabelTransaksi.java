@@ -80,7 +80,7 @@ public class TabelTransaksi extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("ID Sepeda");
 
-        btnShowAll.setText("SHOW ALL");
+        btnShowAll.setText("CLEAR");
         btnShowAll.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 btnShowAllCaretPositionChanged(evt);
