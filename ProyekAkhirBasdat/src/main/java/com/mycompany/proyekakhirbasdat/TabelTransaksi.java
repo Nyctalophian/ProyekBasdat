@@ -353,7 +353,7 @@ public class TabelTransaksi extends javax.swing.JFrame {
             tfIDTransaksi.setText("");
             tfTanggalTransaksi.setText("");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, "Gagal melakukan UPDATE terhadap database");
+            JOptionPane.showMessageDialog(rootPane, "Gagal melakukan UPDATE terhadap database "+ e.getMessage());
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -363,8 +363,18 @@ public class TabelTransaksi extends javax.swing.JFrame {
         String idSepedaTerpilih = tabelTransaksi.getValueAt(selected, 0).toString(); // kolom idSEPEDA
         String idSepedaBaru = tfIDSepeda.getText();
         int hargajualbaru = Integer.parseInt(tfHargaJual.getText());
+        String tanggal= tfTanggalTransaksi.getText();
 
-        String format = "UPDATE Transaksi SET Sepeda_ID = '" + idSepedaBaru +  "', Jual = " + hargajualbaru + " WHERE Trans_id = '" + idSepedaTerpilih + "'";
+        int hargaBeli = 0;
+        ResultSet rs = ambilHargaSepeda(conn, idSepedaBaru);
+        if (rs.next()) {
+            hargaBeli = rs.getInt("Harga_Beli");
+        }
+        int untung = hargajualbaru - hargaBeli;
+
+
+        String format = "UPDATE Transaksi SET Sepeda_ID = '" + idSepedaBaru +  "', Jual = " + hargajualbaru + ", Tgl = '" + tanggal + "', Untung = " + untung + " WHERE Trans_id = '" + idSepedaTerpilih + "'";
+        System.out.println(format);
         Statement st = conn.createStatement();
         st.executeUpdate(format);
     }
@@ -375,14 +385,14 @@ public class TabelTransaksi extends javax.swing.JFrame {
     }//GEN-LAST:event_tfIDTransaksiActionPerformed
 
     // CREATE
-    public void statementInsert(Connection conn, String idTransaksi, String tgl, String idSepeda, String hargaJual) throws SQLException , NumberFormatException {
+        public void statementInsert(Connection conn, String idTransaksi, String tgl, String idSepeda, String hargaJual) throws SQLException , NumberFormatException {
         // ambil harga beli
         ResultSet ambilHarga = ambilHargaSepeda(conn, idSepeda);
         String hargaBeli = "";
         while (ambilHarga.next()){
             hargaBeli = ambilHarga.getString("Harga_Beli");
         }
-        
+
         // cari untung
         int untung=0;
         try{
@@ -390,8 +400,8 @@ public class TabelTransaksi extends javax.swing.JFrame {
         catch(NumberFormatException e){
         throw new NumberFormatException("error number format");
         }
-        
-        
+
+
 //        String format = ("insert into Transaksi(Trans_ID,Tgl,Sepeda_ID,Jual,Untung) values ('" + idTransaksi + "','" + tgl + "','" + idSepeda +"','" + hargaJual + "','" + untung + "')");
 //        Statement st = conn.createStatement();
 //        st.executeUpdate(format);
@@ -403,27 +413,27 @@ public class TabelTransaksi extends javax.swing.JFrame {
     ps.setInt(4,untung);
     ps.executeUpdate();
     }
-    
+
     // RETRIEVE ALL
     public ResultSet statementQueryAll(Connection conn) throws SQLException {
         Statement st = conn.createStatement();
         ResultSet rs = st.executeQuery(
             "SELECT * FROM Transaksi"
         );
-        
+
         return rs;
     }
-    
+
     // RETRIEVE HARGA
     public ResultSet ambilHargaSepeda(Connection conn, String idSepeda) throws SQLException {
         String sql = "select Harga_Beli from Sepeda where Sepeda_ID = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, idSepeda);
-        
+
         ResultSet rs = ps.executeQuery();
         return rs;
     }
-    
+
     // RETRIEVE TRANSAKSI
     public ResultSet statementQueryCondition(Connection conn,String T_id,String Tgl, String S_id, int jual) throws SQLException {
         String sql = "select * from Transaksi where Trans_ID like ? or Tgl like ? or Sepeda_ID like ? or Jual like ?";
@@ -434,22 +444,22 @@ public class TabelTransaksi extends javax.swing.JFrame {
         ps.setString(4, "%"+jual+"%");
 
         ResultSet rs = ps.executeQuery();
-        
+
         return rs;
     }
-    
+
     // SHOW ALL DATA
     public void showAllData() {
         try {
             Connection conn = ConnectionDB.getConnection();
 
             tfIDTransaksi.setEnabled(true);
-            
+
             tfIDTransaksi.setText("");
             tfTanggalTransaksi.setText("");
             tfIDSepeda.setText("");
             tfHargaJual.setText("");
-            
+
             ResultSet hasil = statementQueryAll(conn);
             while (hasil.next()) {
                 String id = hasil.getString("Trans_ID");
@@ -457,7 +467,7 @@ public class TabelTransaksi extends javax.swing.JFrame {
                 String sepeda_id = hasil.getString("Sepeda_ID");
                 String jual = hasil.getString("Jual");
                 String untung = hasil.getString("Untung");
-                
+
                 tableModel.addRow(new Object[]{id, tgl, sepeda_id, jual, untung});
             }
         } catch (Exception e) {
@@ -499,7 +509,7 @@ public class TabelTransaksi extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
