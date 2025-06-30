@@ -270,6 +270,7 @@ public class TabelSepeda extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Gagal menambahkan data");
         }
 
+        JOptionPane.showMessageDialog(null, "Data sepeda berhasil ditambahkan.", "Information", JOptionPane.INFORMATION_MESSAGE);
         tfIDSepeda.setText("");
         tfNamaSepeda.setText("");
         tfHargaBeli.setText("");
@@ -333,6 +334,7 @@ public class TabelSepeda extends javax.swing.JFrame {
             tableModel.setRowCount(0);
             showAllData();
 
+            JOptionPane.showMessageDialog(null, "Data sepeda berhasil dihapus.", "Information", JOptionPane.INFORMATION_MESSAGE);
             tfIDSepeda.setText("");
             tfNamaSepeda.setText("");
             tfHargaBeli.setText("");

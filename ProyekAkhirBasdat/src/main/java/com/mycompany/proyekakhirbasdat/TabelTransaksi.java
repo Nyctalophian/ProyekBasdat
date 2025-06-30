@@ -293,6 +293,7 @@ public class TabelTransaksi extends javax.swing.JFrame {
                 tfTanggalTransaksi.setText("");
                 tfIDSepeda.setText("");
                 tfHargaJual.setText("");
+                JOptionPane.showMessageDialog(null, "Data sepeda berhasil ditambahkan.", "Information", JOptionPane.INFORMATION_MESSAGE);
                 showAllData();
     }//GEN-LAST:event_btnCreateActionPerformed
 
@@ -331,10 +332,12 @@ public class TabelTransaksi extends javax.swing.JFrame {
         int selected = tabelTransaksi.getSelectedRow();
         Connection conn = null;
         String idtran;
-        if (selected !=-1)
-        idtran = tabelTransaksi.getValueAt(selected, 0).toString();
-        else
+        
+        if (selected !=-1) {
+        idtran = tabelTransaksi.getValueAt(selected, 0).toString();}
+        else {
         idtran= tfIDTransaksi.getText();
+        }
         try {
             conn = ConnectionDB.getConnection();
             statementDelete(conn, idtran);
@@ -346,6 +349,7 @@ public class TabelTransaksi extends javax.swing.JFrame {
             tfIDTransaksi.setText("");
             tfHargaJual.setText("");
             tfTanggalTransaksi.setText("");
+            JOptionPane.showMessageDialog(null, "Data sepeda berhasil dihapus.", "Information", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, "SQL");
         } catch (ClassNotFoundException e) {
