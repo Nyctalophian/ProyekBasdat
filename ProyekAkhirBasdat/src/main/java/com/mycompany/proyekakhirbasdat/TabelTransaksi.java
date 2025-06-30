@@ -375,7 +375,7 @@ public class TabelTransaksi extends javax.swing.JFrame {
     }//GEN-LAST:event_tfIDTransaksiActionPerformed
 
     // CREATE
-    public void statementInsert(Connection conn, String idTransaksi, String tgl, String idSepeda, String hargaJual) throws SQLException {
+    public void statementInsert(Connection conn, String idTransaksi, String tgl, String idSepeda, String hargaJual) throws SQLException , NumberFormatException {
         // ambil harga beli
         ResultSet ambilHarga = ambilHargaSepeda(conn, idSepeda);
         String hargaBeli = "";
@@ -384,16 +384,23 @@ public class TabelTransaksi extends javax.swing.JFrame {
         }
         
         // cari untung
-        int untung = Integer.parseInt(hargaJual) - Integer.parseInt(hargaBeli);
+        int untung=0;
+        try{
+         untung = Integer.parseInt(hargaJual) - Integer.parseInt(hargaBeli);}
+        catch(NumberFormatException e){
+        throw new NumberFormatException("error number format");
+        }
+        
         
 //        String format = ("insert into Transaksi(Trans_ID,Tgl,Sepeda_ID,Jual,Untung) values ('" + idTransaksi + "','" + tgl + "','" + idSepeda +"','" + hargaJual + "','" + untung + "')");
 //        Statement st = conn.createStatement();
 //        st.executeUpdate(format);
-    String sql= "insert into Transaksi values ((select max(Trans_ID)+1 from Transaksi ) ,getdate(),?,?,?)";
+    String sql= "insert into Transaksi values (? ,getdate(),?,?,?)";
     PreparedStatement ps = conn.prepareStatement(sql);
-    ps.setString(1, idSepeda);
-    ps.setInt(2,Integer.parseInt(hargaJual));
-    ps.setInt(3,untung);
+    ps.setString(1,idTransaksi );
+    ps.setString(2, idSepeda);
+    ps.setInt(3,Integer.parseInt(hargaJual));
+    ps.setInt(4,untung);
     ps.executeUpdate();
     }
     
