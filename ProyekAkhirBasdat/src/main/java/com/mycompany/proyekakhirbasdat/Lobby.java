@@ -15,6 +15,7 @@ public class Lobby extends javax.swing.JFrame {
      */
     public Lobby() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**

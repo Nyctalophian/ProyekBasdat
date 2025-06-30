@@ -26,6 +26,7 @@ public class TabelTransaksi extends javax.swing.JFrame {
     public TabelTransaksi() {
         initComponents();
         showAllData();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -60,6 +61,7 @@ public class TabelTransaksi extends javax.swing.JFrame {
         tabelTransaksi = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         tfHargaJual = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -175,32 +177,45 @@ public class TabelTransaksi extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Harga Jual");
 
+        jButton1.setText("Back to Lobby");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnRetrieve, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3)
+                                .addComponent(tfIDTransaksi)
+                                .addComponent(tfTanggalTransaksi)
+                                .addComponent(jLabel4)
+                                .addComponent(btnShowAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
+                                .addComponent(tfIDSepeda, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(tfHargaJual))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addComponent(btnRetrieve, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(tfIDTransaksi)
-                    .addComponent(tfTanggalTransaksi)
-                    .addComponent(jLabel4)
-                    .addComponent(btnShowAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1)
-                    .addComponent(tfIDSepeda, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tfHargaJual))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -223,13 +238,13 @@ public class TabelTransaksi extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tfIDSepeda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(tfHargaJual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(72, 72, 72)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                         .addComponent(btnShowAll)
-                        .addGap(18, 18, 18)
+                        .addGap(38, 38, 38)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCreate)
                             .addComponent(btnRetrieve))
@@ -237,7 +252,9 @@ public class TabelTransaksi extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnDelete)
                             .addComponent(btnUpdate))))
-                .addGap(16, 16, 16))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -374,8 +391,14 @@ public class TabelTransaksi extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfIDTransaksiActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Lobby newWindow = new Lobby();
+        this.dispose();
+        newWindow.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // CREATE
-    public void statementInsert(Connection conn, String idTransaksi, String tgl, String idSepeda, String hargaJual) throws SQLException , NumberFormatException {
+    public void statementInsert(Connection conn, String idTransaksi, String tgl, String idSepeda, String hargaJual) throws SQLException {
         // ambil harga beli
         ResultSet ambilHarga = ambilHargaSepeda(conn, idSepeda);
         String hargaBeli = "";
@@ -384,23 +407,16 @@ public class TabelTransaksi extends javax.swing.JFrame {
         }
         
         // cari untung
-        int untung=0;
-        try{
-         untung = Integer.parseInt(hargaJual) - Integer.parseInt(hargaBeli);}
-        catch(NumberFormatException e){
-        throw new NumberFormatException("error number format");
-        }
-        
+        int untung = Integer.parseInt(hargaJual) - Integer.parseInt(hargaBeli);
         
 //        String format = ("insert into Transaksi(Trans_ID,Tgl,Sepeda_ID,Jual,Untung) values ('" + idTransaksi + "','" + tgl + "','" + idSepeda +"','" + hargaJual + "','" + untung + "')");
 //        Statement st = conn.createStatement();
 //        st.executeUpdate(format);
-    String sql= "insert into Transaksi values (? ,getdate(),?,?,?)";
+    String sql= "insert into Transaksi values ((select max(Trans_ID)+1 from Transaksi ) ,getdate(),?,?,?)";
     PreparedStatement ps = conn.prepareStatement(sql);
-    ps.setString(1,idTransaksi );
-    ps.setString(2, idSepeda);
-    ps.setInt(3,Integer.parseInt(hargaJual));
-    ps.setInt(4,untung);
+    ps.setString(1, idSepeda);
+    ps.setInt(2,Integer.parseInt(hargaJual));
+    ps.setInt(3,untung);
     ps.executeUpdate();
     }
     
@@ -533,6 +549,7 @@ public class TabelTransaksi extends javax.swing.JFrame {
     private javax.swing.JButton btnRetrieve;
     private javax.swing.JButton btnShowAll;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
